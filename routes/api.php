@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('info', function () {
+    $appInfo = [
+        'server' => getenv('APP_NAME'),
+        'version' => getenv('APP_VERSION')
+    ];
+    return response()->json($appInfo);
+});
+
+Route::group(['middleware' => 'api'], function ($router) {
+    /**
+     * Authentication Module
+     */
+    Route::group(['prefix' => 'auth'], function() {
+        Route::post('register', [AuthController::class, 'register']);
+        Route::post('login', [AuthController::class, 'login']);
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::get('me', [AuthController::class, 'me']);
+    });
+
 });
