@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\SeleniumController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +36,5 @@ Route::group(['middleware' => 'api'], function ($router) {
     });
 
 });
+
+Route::get('access-page', [SeleniumController::class, 'acessPageSave']);
