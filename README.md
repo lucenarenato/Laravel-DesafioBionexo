@@ -44,3 +44,7 @@ Executar o comando abaixo, após o preenchimento dos annotations
 Fontes:
 - https://github.com/php-webdriver/php-webdriver/wiki
 - https://github.com/seleniumhq/selenium
+- https://testpages.herokuapp.com/styled/tag/table.html
+- https://testpages.herokuapp.com/styled/basic-html-form-test.html
+- https://testpages.herokuapp.com/styled/download/download.html
+- https://testpages.herokuapp.com/styled/file-upload-test.html

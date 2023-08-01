@@ -14,6 +14,7 @@
         "laravellegends/pt-br-validator": "^10.0",
         "php-webdriver/webdriver": "^1.14",
         "prettus/l5-repository": "2.9.0",
+        "smalot/pdfparser": "^2.0",
         "tymon/jwt-auth": "^2.0"
     },
     "require-dev": {
