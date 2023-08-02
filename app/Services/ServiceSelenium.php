@@ -43,7 +43,7 @@ class ServiceSelenium
             ];
             array_push($data, $col);
         }
-
+        $this->driver->quit();
         return $data;
     }
 
@@ -54,8 +54,7 @@ class ServiceSelenium
             $this->driver->get(env('ACCESS_FORM'));
             $this->driver->findElement(WebDriverBy::name('username'))->sendKeys($params['username']);
             $this->driver->findElement(WebDriverBy::name('password'))->sendKeys($params['password']);
-            $this->driver->findElement(WebDriverBy::name('comments'))->sendKeys('');
-            $this->driver->findElement(WebDriverBy::name('comments'))->sendKeys($params['comments']);
+            $this->driver->findElement(WebDriverBy::name('comments'))->clear()->sendKeys($params['comments']);
             sleep(2);
             $this->driver->findElement(WebDriverBy::name('filename'))
                 ->setFileDetector(new LocalFileDetector())->sendKeys(Storage::disk('local_s3')->path('laravel.png'));
@@ -69,6 +68,7 @@ class ServiceSelenium
             $this->driver->findElement(WebDriverBy::xpath('//*[@id="HTMLFormElements"]/table/tbody/tr[8]/td/select/option[5]'))->click();
             // subimit
             $this->driver->findElement(WebDriverBy::xpath('//*[@id="HTMLFormElements"]/table/tbody/tr[9]/td/input[2]'))->click();
+            $this->driver->quit();
 
             return 'ok!';
 

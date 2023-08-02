@@ -53,6 +53,7 @@ Executar o comando abaixo, após o preenchimento dos annotations
 
 Fontes:
 - https://github.com/php-webdriver/php-webdriver/wiki
+- https://github.com/php-webdriver/php-webdriver/wiki/Chrome#installation
 - https://github.com/seleniumhq/selenium
 - https://github.com/seleniumhq/docker-selenium/#quick-start
 - https://testpages.herokuapp.com/styled/tag/table.html
