@@ -44,6 +44,13 @@ return [
             'throw' => false,
         ],
 
+        'local_s3'  => [
+            'driver' => 'local',
+            'root' => storage_path('local_S3'),
+            'url' => env('APP_URL') . '/local_S3',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

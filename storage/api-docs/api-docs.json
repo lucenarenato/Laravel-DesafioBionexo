@@ -228,6 +228,55 @@
                     }
                 ]
             }
+        },
+        "/api/read-form": {
+            "post": {
+                "tags": [
+                    "Desafio"
+                ],
+                "summary": "Fill the form",
+                "description": "Fill in the link form",
+                "operationId": "3380bd6ed0cf967934ef1b6bacbfcb9a",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "Renato Lucena"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "secret"
+                                    },
+                                    "comments": {
+                                        "type": "string",
+                                        "example": "Sou novo dev php senior da Bionexo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success Fill in the link form"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {

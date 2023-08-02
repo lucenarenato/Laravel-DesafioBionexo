@@ -41,9 +41,20 @@ Executar o comando abaixo, após o preenchimento dos annotations
 **Acessar o SWAGGER(Documentação da API)**:
 - http://laravel.test/api/documentation
 
+## Selenium
+> Point your WebDriver tests to http://localhost:4444
+`http://localhost:4444/ui`
+- password = secret.
+
+## Caso tenha problema com docker sail
+`docker-compose up -d`
+> Swagger
+`docker exec -i laravel-bionexo-laravel.test-1 php artisan l5-swagger:generate`
+
 Fontes:
 - https://github.com/php-webdriver/php-webdriver/wiki
 - https://github.com/seleniumhq/selenium
+- https://github.com/seleniumhq/docker-selenium/#quick-start
 - https://testpages.herokuapp.com/styled/tag/table.html
 - https://testpages.herokuapp.com/styled/basic-html-form-test.html
 - https://testpages.herokuapp.com/styled/download/download.html

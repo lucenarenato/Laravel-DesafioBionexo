@@ -36,5 +36,7 @@ Route::group(['middleware' => 'api'], function ($router) {
     });
 
 });
-
-Route::get('access-page', [SeleniumController::class, 'acessPageSave']);
+// 1. Acessar a página https://testpages.herokuapp.com/styled/tag/table.html e capturar todas as informações exibidas na tabela e armazenar em um banco de dados mysql
+Route::get('access-page', [SeleniumController::class, 'accessPageSave']);
+// 2. Preencher o formulário através do link https://testpages.herokuapp.com/styled/basic-html-form-test.html e retornar se preenchimento foi ok ou não. ( pode inventar as informações a serem preenchidas)
+Route::post('read-form', [SeleniumController::class, 'sendDataToForm']);
