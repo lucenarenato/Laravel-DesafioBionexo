@@ -70,13 +70,52 @@ class ServiceSelenium
             $this->driver->findElement(WebDriverBy::xpath('//*[@id="HTMLFormElements"]/table/tbody/tr[9]/td/input[2]'))->click();
             $this->driver->quit();
 
-            return 'ok!';
+            return 'Formulario preenchido com sucesso!';
 
         } catch(Exception $e) {
 			$error=$e->getMessage();
 			echo 'Error Message: ' . substr($error,0,strpos($error,'Form documentation')) . "\n";
             Log::error('Error Message: ' . substr($error,0,strpos($error,'Form documentation')) . "\n");
             Log::error($error=$e->getMessage());
+		}
+
+    }
+
+    public function directLinkDownload()
+    {
+        try{
+            sleep(5);
+            $this->driver->get(ENV('DIRECT_DOWNLOAD'));
+            sleep(3);
+            $this->driver->findElement(WebDriverBy::id('direct-download'))->click();
+            $this->driver->quit();
+            return 'Download feito com sucesso! textfile.txt';
+        } catch(Exception $e) {
+			$error = $e->getMessage();
+            Log::error($error);
+            throw $e;
+		}
+
+    }
+
+    public function uploadFile(string $fileName)
+    {
+        try{
+            sleep(5);
+            $this->driver->get(ENV('UPLOAD_RENAME'));
+            sleep(3);
+            $this->driver->findElement(WebDriverBy::id('fileinput'))
+                ->setFileDetector(new LocalFileDetector())->sendKeys(Storage::disk('local_s3')->path($fileName));
+            $this->driver->findElement(WebDriverBy::id('itsafile'))->click();
+            $this->driver->findElement(WebDriverBy::name('upload'))->click();
+            sleep(2);
+            $this->driver->quit();
+            return 'Upload file feito com sucesso! Teste TKS.txt';
+
+        } catch(Exception $e) {
+			$error = $e->getMessage();
+            Log::error($error);
+            throw $e;
 		}
 
     }

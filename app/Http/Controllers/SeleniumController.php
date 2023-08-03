@@ -8,6 +8,7 @@ use App\Services\ServiceSelenium;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class SeleniumController extends Controller
 {
@@ -83,5 +84,58 @@ class SeleniumController extends Controller
             return $this->serviceSelenium->sendFormParamns($params);
         }
 
+    }
+
+    /**
+     * @OA\Get (
+     *     path="/api/download",
+     *     operationId="DownloadFile",
+     *     tags={"Desafio"},
+     *     summary="Download file txt",
+     *     description="Download file textfile.txt",
+     *     security={{"bearerAuth":{}}},
+     *
+     *     @OA\Response(
+     *          response=200,
+     *          description="Successful",
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="User not authorized. Wrong login or password.",
+     *          @OA\JsonContent()
+     *      ),
+     *     @OA\Response(
+     *          response=422,
+     *          description="Operation return error messages",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Sorry. Please try again"))
+     *     ),
+     * )
+     *
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function download()
+    {
+        $download = $this->serviceSelenium->directLinkDownload();
+        return response()->json($download, Response::HTTP_OK);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/upload",
+     *     tags={"Desafio"},
+     *     summary="Upload file",
+     *     description="Upload file and rename",
+     *     security={{"bearerAuth":{}}},
+     *      @OA\Response(response=200, description="Success upload file" ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     * )
+     */
+    public function uploadFile()
+    {
+        Storage::disk('local_s3')->move('textfile.txt', 'Teste TKS.txt');
+        $upload = $this->serviceSelenium->uploadFile('Teste TKS.txt');
+        return response()->json($upload, Response::HTTP_OK);
     }
 }
