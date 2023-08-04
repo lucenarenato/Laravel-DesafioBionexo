@@ -11,12 +11,40 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Imagens do projeto
+
+<p align="center">
+  <img src="2023-08-04_01-48.png"/>
+</p>
+<p align="center">
+  <img src="2023-08-04_02-29_1.png"/>
+</p>
+<p align="center">
+  <img src="2023-08-04_01-47.png"/>
+</p>
+<p align="center">
+  <img src="2023-08-04_01-46.png"/>
+</p>
+<p align="center">
+  <img src="2023-08-04_02-29.png"/>
+</p>
+<p align="center">
+  <img src="2023-08-04_01-50.png"/>
+</p>
+
 ## Requisitos
 - Docker
 - PHP 8.2
 - composer
 - MYSQL
 - chromedriver
+
+## instalação inicial
+
+```bash
+    composer install -o
+    cp .env.example .env
+```
 
 ## Run sail
 ```sh
