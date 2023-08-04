@@ -50,12 +50,12 @@ class ServiceSelenium
     public function sendFormParamns($params)
     {
         try {
-            sleep(2);
+            sleep(3);
             $this->driver->get(env('ACCESS_FORM'));
             $this->driver->findElement(WebDriverBy::name('username'))->sendKeys($params['username']);
             $this->driver->findElement(WebDriverBy::name('password'))->sendKeys($params['password']);
             $this->driver->findElement(WebDriverBy::name('comments'))->clear()->sendKeys($params['comments']);
-            sleep(2);
+            sleep(3);
             $this->driver->findElement(WebDriverBy::name('filename'))
                 ->setFileDetector(new LocalFileDetector())->sendKeys(Storage::disk('local_s3')->path('laravel.png'));
 
@@ -88,6 +88,7 @@ class ServiceSelenium
             $this->driver->get(ENV('DIRECT_DOWNLOAD'));
             sleep(3);
             $this->driver->findElement(WebDriverBy::id('direct-download'))->click();
+            sleep(3);
             $this->driver->quit();
             return 'Download feito com sucesso! textfile.txt';
         } catch(Exception $e) {
