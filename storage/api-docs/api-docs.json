@@ -185,14 +185,58 @@
                 ]
             }
         },
-        "/api/reading": {
+        "/api/convert-pdf-to-csv": {
             "get": {
                 "tags": [
                     "Desafio"
                 ],
-                "summary": "reading file txt",
-                "description": "reading file textfile.txt",
-                "operationId": "readingFile",
+                "summary": "convert pdf to csv",
+                "description": "convert pdf to csv",
+                "operationId": "readingFileCSV",
+                "responses": {
+                    "200": {
+                        "description": "Successful"
+                    },
+                    "401": {
+                        "description": "User not authorized. Wrong login or password.",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Operation return error messages",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry. Please try again"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/convert-pdf-to-xls": {
+            "get": {
+                "tags": [
+                    "Desafio"
+                ],
+                "summary": "convert pdf to xls",
+                "description": "convert pdf to xls",
+                "operationId": "readingFileXLS",
                 "responses": {
                     "200": {
                         "description": "Successful"

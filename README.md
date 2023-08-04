@@ -51,11 +51,15 @@ Executar o comando abaixo, após o preenchimento dos annotations
 > Swagger
 `docker exec -i laravel-bionexo-laravel.test-1 php artisan l5-swagger:generate`
 
-Fontes:
+## Fontes de Estudo.
 - https://github.com/php-webdriver/php-webdriver/wiki
 - https://github.com/php-webdriver/php-webdriver/wiki/Chrome#installation
 - https://github.com/seleniumhq/selenium
 - https://github.com/seleniumhq/docker-selenium/#quick-start
+- https://regex101.com/
+- [Livro Expressões Regulares] - https://www.piazinho.com.br/
+
+## Fontes do desafio
 - https://testpages.herokuapp.com/styled/tag/table.html
 - https://testpages.herokuapp.com/styled/basic-html-form-test.html
 - https://testpages.herokuapp.com/styled/download/download.html

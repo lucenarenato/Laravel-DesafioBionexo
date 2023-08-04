@@ -51,3 +51,4 @@ Route::post('upload', [SeleniumController::class, 'uploadFile']);
 
 // LEITURA PDF.
 Route::get('convert-pdf-to-csv', [PdfCsvConversionController::class, 'convertPdfToCsv']);
+Route::get('convert-pdf-to-xls', [PdfCsvConversionController::class, 'convertPdfToXLS']);

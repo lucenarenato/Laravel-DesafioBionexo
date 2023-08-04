@@ -120,4 +120,31 @@ class ServiceSelenium
 
     }
 
+    public function testeUpload(string $fileName)
+    {
+        try{
+            sleep(5);
+            $rename = 'Teste TKS';
+            sleep(5);
+            $this->driver->get(ENV('DIRECT_DOWNLOAD'));
+            sleep(3);
+            $href = $this->driver->findElement(WebDriverBy::id('direct-download-a'))->getAttribute('href');
+            $url = $this->driver->getCurrentURL();
+            $url = parse_url($url, PHP_URL_HOST);
+            $this->driver->quit();
+            $href = "https://$url$href";
+            Log::debug($href);
+            file_put_contents("/var/www/html/storage/local_S3/$href", file_get_contents($href));
+            sleep(2);
+            $this->driver->quit();
+            return 'Upload file feito com sucesso! Teste TKS.txt';
+
+        } catch(Exception $e) {
+			$error = $e->getMessage();
+            Log::error($error);
+            throw $e;
+		}
+
+    }
+
 }
