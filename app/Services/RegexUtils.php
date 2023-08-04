@@ -6,14 +6,6 @@ use Illuminate\Support\Arr;
 
 class RegexUtils
 {
-    private static function extractValue($text, $startMarker, $endMarker = null)
-    {
-        $startMarker = preg_quote($startMarker, '/');
-        $endMarker = $endMarker ? preg_quote($endMarker, '/') : '';
-        preg_match('/' . $startMarker . '(.*)' . $endMarker . '/', $text, $matches);
-        return trim(Arr::get($matches, 1, ''));
-    }
-
     public static function fetchValues($text)
     {
         // remover quebra de linhas
@@ -92,7 +84,7 @@ class RegexUtils
 
         $lineOfEachInformation['45 - Valor Glosa Geral (R$)'] = trim($values[2]);
 
-        $groupData = [];
+        $groupData = array();
         array_push($groupData, $lineOfEachInformation);
         //dd($groupData);
         return $groupData;
@@ -144,9 +136,14 @@ class RegexUtils
 
             if (preg_match($string33, $arrayOfPages[$i], $matches) && strlen($arrayOfPages[$i]) > 87 && strlen($arrayOfPages[$i]) < 111) {
                 $values = preg_split('/\s/', trim($matches[2]));
-
                 $lineOfEachInformation[$string22] = trim($values[0]) . " " . trim($values[2]);
             }
+            /*if(preg_match('/(26 \- Descrição)(.*)/', $arrayOfPages[$i], $matches)){
+                preg_match('/(26 \- Descrição)(.*)/', $arrayOfPages[$i], $matches);
+                $values = preg_split('/\s/', trim($matches[1]));
+                $lineOfEachInformation['26 - Descrição'] = trim($values[0]) . " " . trim($values[1]) . " " . trim($values[2]);
+                dump($lineOfEachInformation['26 - Descrição']);
+            }*/
         }
 
         // VERIFICAR PROCEDIMENTOS
@@ -167,7 +164,7 @@ class RegexUtils
             '23 - Data de realizacao' => substr($matches[2], 0, 10),
             '24 - Tabela' => substr($matches[2], 10, 2),
             '25 - Codigo Procedimento' => substr($matches[2], 12, 8),
-            '26 - Descrição' => substr($matches[2], 20, 11), //27/02/20202233010021USG ABDOMEN TOTAL(ABDOMEN 142,80 1 142,80 140,00 2,80 23 - Data de
+            //'26 - Descrição' => substr($matches[2], 20, 11), //27/02/20202233010021USG ABDOMEN TOTAL(ABDOMEN 142,80 1 142,80 140,00 2,80 23 - Data de
         ];
 
 
@@ -183,9 +180,18 @@ class RegexUtils
                     $procedureDescription['32 - Valor Glosa'] = $values[5];
                     $procedureDescription['33 - Codigo da Glosa'] = $arrayOfPages[sizeof($arrayOfPages) - 1];
 
+                    /*if(isset($values[75])) {
+                        $string = $values[75] . ' ' . $values[76] . ' ' . $values[77];
+                        $result = preg_replace('/\d+/', '', $string); // removo os numeros
+                        $result2 = str_replace("da Guia//", "", $result);
+                        $result3 = str_replace("Guia//", "", $result2);
+                        $procedureDescription['26 - Descrição'] = $result3;
+                    }*/
                 }
             }
         }
+        //preg_match('/(26 \- Descrição)(.*)(27 \ - Grau de \)/', $arrayOfPages[$i], $matches);
+        //$string26 = '/(26 \- Descrição)(.*)/';
 
         for ($i = 2; $i < sizeof($arrayOfPages); $i++) {
             preg_match('/(34 \- Valor Informado da Guia \(R\$\))(.*)(35 \- Valor Processado da Guia \(R\$\))/', $arrayOfPages[$i], $matches);
@@ -207,21 +213,24 @@ class RegexUtils
     {
         //dump($lineOfEachInformation); dump($arrayOfPages); dd($matches);
         $header = [
-            'Date' => [],
-            'table' => [],
-            'procedure' => [],
-            'description' => [],
-            'value' => [],
-            'amount' => [],
-            'amountProcedure' => [],
-            'amountReleased' => [],
-            'glossValue' => [],
-            'glossCode' => [],
+            'Date' => array(),
+            'table' => array(),
+            'procedure' => array(),
+            'value' => array(),
+            'amount' => array(),
+            'amountProcedure' => array(),
+            'amountReleased' => array(),
+            'glossValue' => array(),
+            'glossCode' => array(),
+            //'description' => array(),
 
         ];
-        $arrayValues = [];
-        $guideTotalValue = [];
-        $filteredData = [];
+        $arrayValues = array();
+        $guideTotalValue = array();
+        $filteredData = array();
+
+        //dump($header);
+        //dump($arrayOfPages);
 
         array_push($header['Date'], $matches[2]);
         for ($i = 3; $i < sizeof($arrayOfPages); $i++) {
@@ -283,10 +292,10 @@ class RegexUtils
         }
 
         for ($memory = 0; $memory < sizeof($arrayValues); $memory++) {
-
-            if (!preg_match('/(\s)/', $arrayValues[$memory]) && strlen($arrayValues[$memory]) == 1) {
+            $value = $arrayValues[$memory];
+            if (!preg_match('/(\s)/', $value) && strlen($value) == 1) {
                 for ($i = 0; $i < sizeof($header['Date']); $i++) {
-                    array_push($header['amount'], $arrayValues[$memory]);
+                    array_push($header['amount'], $value);
                     $memory++;
                 }
                 break;
@@ -326,34 +335,9 @@ class RegexUtils
             }
         }
 
+
         for ($i = 0; $i < sizeof($arrayOfPages); $i++) {
 
-            // if (preg_match('/(assistencial)(.*)/', $arrayOfPages[$i], $matches)) {
-
-            //     $position = $i + 3;
-            //         for ($j = 0; $j < sizeof($header['procedure']); $j++) {
-            //             array_push($header['description'], trim($arrayOfPages[$position]));
-            //             $position++;
-            //         }
-            //         preg_match('/26 - Descrição/', $arrayOfPages[$i], $matches);
-
-            //         if ($matches[0]) {
-
-            //             $values = preg_split('/\s/', $matches[0]);
-
-            //             $guideTotalValue['26 - Descrição'] =  $matches[0];
-
-            //         } else {
-            //             $position = sizeof($arrayOfPages) -  sizeof($header['procedure']);
-            //             for ($j = 0; $j < sizeof($header['procedure']); $j++) {
-            //                 array_push($header['description'], trim($arrayOfPages[$position]));
-            //                 $position++;
-            //             }
-            //             $guideTotalValue['26 - Descrição'] =  "";
-
-            //         }
-
-            // }
             if (preg_match('/(Executada)(.*)/', $arrayOfPages[$i], $matches)) {
 
                 if (strlen($arrayOfPages[$i]) > 100) {
@@ -389,9 +373,9 @@ class RegexUtils
             }
         }
 
-        $lineOfEachInformationProcedure = [];
+        $lineOfEachInformationProcedure = array();
         for ($i = 0; $i < sizeof($header['Date']); $i++) {
-            //dd($header);
+
             $lineOfEachInformationProcedure['23 - Data de realizacao'] = $header['Date'][$i];
             if(isset($header['table'][$i])) {
                 $lineOfEachInformationProcedure['24 - Tabela'] = $header['table'][$i];
@@ -399,11 +383,11 @@ class RegexUtils
                 $lineOfEachInformationProcedure['24 - Tabela'] = "";
             }
             $lineOfEachInformationProcedure['25 - Codigo Procedimento'] = $header['procedure'][$i];
-            if(isset($header['description'][$i])) {
+            /*if(isset($header['description'][$i])) {
                 $lineOfEachInformationProcedure['26 - Descrição'] = $header['description'][$i];
             } else {
-                $lineOfEachInformationProcedure['26 - Descrição'] = "";
-            }
+                $lineOfEachInformationProcedure['26 - Descrição'] = null;
+            }*/
             $lineOfEachInformationProcedure['28 - Valor Informado'] = isset($header['value'][$i]) ? $header['value'][$i] : "";
             $lineOfEachInformationProcedure['29 - Quantidade'] = isset($header['amount'][$i]) ? $header['amount'][$i] : "";
             $lineOfEachInformationProcedure['30 - Valor Processado'] = isset($header['amountProcedure'][$i]) ? $header['amountProcedure'][$i] : "";
