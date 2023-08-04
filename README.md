@@ -11,12 +11,40 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Imagens do projeto
+
+<p align="center">
+  <img src="2023-08-04_01-48.png"/>
+</p>
+<p align="center">
+  <img src="2023-08-04_02-29_1.png"/>
+</p>
+<p align="center">
+  <img src="2023-08-04_01-47.png"/>
+</p>
+<p align="center">
+  <img src="2023-08-04_01-46.png"/>
+</p>
+<p align="center">
+  <img src="2023-08-04_02-29.png"/>
+</p>
+<p align="center">
+  <img src="2023-08-04_01-50.png"/>
+</p>
+
 ## Requisitos
 - Docker
 - PHP 8.2
 - composer
 - MYSQL
 - chromedriver
+
+## instalação inicial
+
+```bash
+    composer install -o
+    cp .env.example .env
+```
 
 ## Run sail
 ```sh
@@ -41,6 +69,26 @@ Executar o comando abaixo, após o preenchimento dos annotations
 **Acessar o SWAGGER(Documentação da API)**:
 - http://laravel.test/api/documentation
 
-Fontes:
+## Selenium
+> Point your WebDriver tests to http://localhost:4444
+`http://localhost:4444/ui`
+- password = secret.
+
+## Caso tenha problema com docker sail
+`docker-compose up -d`
+> Swagger
+`docker exec -i laravel-bionexo-laravel.test-1 php artisan l5-swagger:generate`
+
+## Fontes de Estudo.
 - https://github.com/php-webdriver/php-webdriver/wiki
+- https://github.com/php-webdriver/php-webdriver/wiki/Chrome#installation
 - https://github.com/seleniumhq/selenium
+- https://github.com/seleniumhq/docker-selenium/#quick-start
+- https://regex101.com/
+- [Livro Expressões Regulares] - https://www.piazinho.com.br/
+
+## Fontes do desafio
+- https://testpages.herokuapp.com/styled/tag/table.html
+- https://testpages.herokuapp.com/styled/basic-html-form-test.html
+- https://testpages.herokuapp.com/styled/download/download.html
+- https://testpages.herokuapp.com/styled/file-upload-test.html

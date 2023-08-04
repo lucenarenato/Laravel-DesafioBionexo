@@ -47,11 +47,16 @@ services:
             timeout: 5s
 
     selenium:
-        image: 'selenium/standalone-chrome'
+        image: 'selenium/standalone-chrome:latest'
+        shm_size: 2g
         extra_hosts:
-        - 'host.docker.internal:host-gateway'
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '${FORWARD_SELENIUM_PORT:-4444}:4444'
+            - '${FORWARD_SELENIUM_HEADFUL_PORT:-7900}:7900'
         volumes:
             - '/dev/shm:/dev/shm'
+            - '/home/renato/Downloads/Bionexo/laravel-bionexo/storage/local_S3:/home/seluser/Downloads:rw'
         networks:
             - sail
 

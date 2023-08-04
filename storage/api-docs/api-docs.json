@@ -184,6 +184,257 @@
                     }
                 ]
             }
+        },
+        "/api/convert-pdf-to-csv": {
+            "get": {
+                "tags": [
+                    "Desafio"
+                ],
+                "summary": "convert pdf to csv",
+                "description": "convert pdf to csv",
+                "operationId": "readingFileCSV",
+                "responses": {
+                    "200": {
+                        "description": "Successful"
+                    },
+                    "401": {
+                        "description": "User not authorized. Wrong login or password.",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Operation return error messages",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry. Please try again"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/convert-pdf-to-xls": {
+            "get": {
+                "tags": [
+                    "Desafio"
+                ],
+                "summary": "convert pdf to xls",
+                "description": "convert pdf to xls",
+                "operationId": "readingFileXLS",
+                "responses": {
+                    "200": {
+                        "description": "Successful"
+                    },
+                    "401": {
+                        "description": "User not authorized. Wrong login or password.",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Operation return error messages",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry. Please try again"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/access-page": {
+            "get": {
+                "tags": [
+                    "Desafio"
+                ],
+                "summary": "Access Page Table",
+                "description": "Access Page Table",
+                "operationId": "AccessPage",
+                "responses": {
+                    "200": {
+                        "description": "Successful"
+                    },
+                    "401": {
+                        "description": "User not authorized. Wrong login or password.",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Operation return error messages",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry. Please try again"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/read-form": {
+            "post": {
+                "tags": [
+                    "Desafio"
+                ],
+                "summary": "Fill the form",
+                "description": "Fill in the link form",
+                "operationId": "3380bd6ed0cf967934ef1b6bacbfcb9a",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "Renato Lucena"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "secret"
+                                    },
+                                    "comments": {
+                                        "type": "string",
+                                        "example": "Sou novo dev php senior da Bionexo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success Fill in the link form"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/download": {
+            "get": {
+                "tags": [
+                    "Desafio"
+                ],
+                "summary": "Download file txt",
+                "description": "Download file textfile.txt",
+                "operationId": "DownloadFile",
+                "responses": {
+                    "200": {
+                        "description": "Successful"
+                    },
+                    "401": {
+                        "description": "User not authorized. Wrong login or password.",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Operation return error messages",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry. Please try again"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/upload": {
+            "post": {
+                "tags": [
+                    "Desafio"
+                ],
+                "summary": "Upload file",
+                "description": "Upload file and rename",
+                "operationId": "0d76db069a33b05082654d8573ebf1ab",
+                "responses": {
+                    "200": {
+                        "description": "Success upload file"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
