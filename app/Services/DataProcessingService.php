@@ -57,9 +57,11 @@ class DataProcessingService
 
             foreach ($pages as $page) {
                 $loop++;
-                // buscar valores via expressão regular
-                $text = RegexUtils::fetchValues($page->getText());
-                PdfToCsvService::receiveDataGenerateCSV(Storage::disk('local_s3')->path('out/out.xls'), $text);
+                // if($loop == 4){
+                    // buscar valores via expressão regular
+                    $text = RegexUtils::fetchValues($page->getText());
+                    PdfToCsvService::receiveDataGenerateCSV(Storage::disk('local_s3')->path('out/out.xls'), $text);
+                // }
             }
             return Storage::disk('local_s3')->files('out');
 
