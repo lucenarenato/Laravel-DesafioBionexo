@@ -17,34 +17,6 @@ class PdfCsvConversionController extends Controller
         $this->dataProcessingService = $dataProcessingService;
     }
 
-    /**
-     * @OA\Get (
-     *     path="/api/convert-pdf-to-csv",
-     *     operationId="readingFileCSV",
-     *     tags={"Desafio"},
-     *     summary="convert pdf to csv",
-     *     description="convert pdf to csv",
-     *     security={{"bearerAuth":{}}},
-     *
-     *     @OA\Response(
-     *          response=200,
-     *          description="Successful",
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="User not authorized. Wrong login or password.",
-     *          @OA\JsonContent()
-     *      ),
-     *     @OA\Response(
-     *          response=422,
-     *          description="Operation return error messages",
-     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Sorry. Please try again"))
-     *     ),
-     * )
-     *
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function convertPdfToCsv()
     {
         $this->dataProcessingService->readPdfOut(Storage::disk('local_s3')->path('Leitura PDF.PDF'));
