@@ -26,7 +26,7 @@
   <img src="2023-08-04_01-46.png"/>
 </p>
 <p align="center">
-  <img src="2023-08-04_02-29.png"/>
+  <img src="2023-08-07_10-24.png"/>
 </p>
 <p align="center">
   <img src="2023-08-04_01-50.png"/>
