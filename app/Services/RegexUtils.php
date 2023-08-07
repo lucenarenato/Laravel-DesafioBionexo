@@ -14,11 +14,12 @@ class RegexUtils
     public static function fetchValues($text)
     {
         try {
-            // remover quebra de linhas
+            //dd($text);
+            // remover quebra de linhas / trasnforma em array
             $arrayOfPages = preg_split('/["\n"]/', $text);
             $string1 = '/1 \- Registro ANS/';
             $string13 = '/13 \- Número da Guia no Prestador/';
-
+            //dd($text, $arrayOfPages);
             //busca exata em cada pagina
             if (preg_match($string1, $text)) {
                 // paginas sem procedimentos

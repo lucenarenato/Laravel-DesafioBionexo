@@ -17,6 +17,7 @@ class RegexRepository
             // -> Esta função procura um padrão específico em alguma string. Retorna verdadeiro se o padrão existir e falso caso contrário.
             preg_match('/(.*)(3 \- Nome da Operadora)/', $arrayOfPages[4], $matches);
             //dump($matches);
+            // logo em seguida pego numero da ANS // -> lineOfEachInformation = linha de cada informação
             $lineOfEachInformation['1 - Registro ANS'] = trim($matches[1]);
             //dd($lineOfEachInformation['1 - Registro ANS']);
             preg_match('/(.*)(4 \- CNPJ da Operadora)/', $arrayOfPages[5], $matches);
@@ -50,7 +51,7 @@ class RegexRepository
             $lineOfEachInformation['38 - Valor Informado do Protocolo (R$)'] = trim($matches[2]);
 
             preg_match('/(38 \- Valor Informado do Protocolo \(R\$\))(.*)(39 \- Valor Processado do Protocolo \(R\$\))/', $arrayOfPages[13], $matches);
-            $values = preg_split('/[\s]/', trim($matches[2]));
+            $values = preg_split('/[\s]/', trim($matches[2])); // \s quebrar por espaço - cria nova posição array
             preg_match('/()(.*)()/', trim($matches[2]), $matches);
             $lineOfEachInformation['39 - Valor Processado do Protocolo (R$)'] = trim($values[0]);
 
@@ -122,6 +123,7 @@ class RegexRepository
 
             $string33 =  '/(33 - Código da Glosa)(.*)/';
 
+            // sizeof -> contar numero de elementos dentro do array
             for ($i = 0; $i < sizeof($arrayOfPages); $i++) {
                 if (preg_match($string33, $arrayOfPages[$i], $matches) && strlen($arrayOfPages[$i]) > 87 && strlen($arrayOfPages[$i]) < 111) {
                     // -> A função se comporta como a função split() do PHP. Ele divide a string por expressões regulares como seus parâmetros.
@@ -156,6 +158,7 @@ class RegexRepository
             $procedureDescription['23 - Data de realizacao'] =  substr($match[2], 0, 10);
             $procedureDescription['24 - Tabela'] =  substr($match[2], 10, 2);
             $procedureDescription['25 - Codigo Procedimento'] =  substr($match[2], 12, 8);
+            // Pegar a descrição
             preg_match('/[a-zA-Z](.*)/', $match[2], $match);
             preg_match('/\D+/', $match[0], $match);
             $procedureDescription['26 - Descrição'] = $match[0]; //27/02/20202233010021USG ABDOMEN TOTAL(ABDOMEN 142,80 1 142,80 140,00 2,80 23 - Data de
@@ -269,7 +272,7 @@ class RegexRepository
             // dd($header['description']);
 
             $arraySize = sizeof($arrayOfPages);
-            // Defina um padrão de expressão regular para uso posterior
+            // Defina um padrão de expressão regular para uso posterior - de 0 a 9, na posição 15 .......
             $pattern = '/([0-9]{0,15}[\.]{0,1}[0-9]{0,15})[,]{1,1}[0-9]{0,2}/';
             // Loop na matriz(array)
             for ($i = 3; $i < $arraySize; $i++) {
@@ -277,14 +280,14 @@ class RegexRepository
                 $isValidPage = preg_match($pattern, $currentPage) && !preg_match('/\(/', $currentPage);
                 $isSingleChar = strlen($currentPage) == 1;
                 if ($isValidPage || $isSingleChar) {
-                    // Divida a página atual e adicione suas partes à matriz de valores
+                    // Divida a página atual e adicione suas partes à matriz de valores - valores informado
                     $txt = preg_split('/(\s)/', $currentPage);
                     foreach ($txt as $textPart) {
                         $arrayValues[] = trim($textPart);
                     }
                 }
             }
-
+            //dd($arrayValues);
             $headerDateSize = sizeof($header['Date']);
 
             for ($memory = 0; $memory < sizeof($arrayValues); $memory++) {
