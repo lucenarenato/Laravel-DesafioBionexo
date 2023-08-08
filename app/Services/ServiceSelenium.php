@@ -30,7 +30,7 @@ class ServiceSelenium
     public function accessPage()
     {
         $access = $this->driver->get(env('ACCESS_PAGE'));
-        // buscar id da table "<table id="mytable">"
+        // buscar id da table "<table id="mytable">" -> nao pegar th
         $tblTags = $access->findElement(WebDriverBy::id('mytable'))
             ->findElements(WebDriverBy::cssSelector('tr:not(:has(th))'));
 
