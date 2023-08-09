@@ -73,6 +73,7 @@ class ServiceSelenium
             return 'Formulario preenchido com sucesso!';
 
         } catch(Exception $e) {
+            $this->driver->quit();
 			$error=$e->getMessage();
 			echo 'Error Message: ' . substr($error,0,strpos($error,'Form documentation')) . "\n";
             Log::error('Error Message: ' . substr($error,0,strpos($error,'Form documentation')) . "\n");
