@@ -20,4 +20,4 @@ corrigir para cada linha abaixo, ficar abaixo da coluna "26 - Descrição"
   "PROLACTINA RIE"
   
 
-                        
+dd(preg_match('/(.*)(' . $indexQtde . ')(.*)/', $arrayOfPages[$i], $match));                        

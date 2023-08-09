@@ -55,6 +55,6 @@ class PdfCsvConversionController extends Controller
     public function convertPdfToXLS()
     {
         $files = DataProcessingService::readPdfOut(Storage::disk('local_s3')->path('Leitura PDF.PDF'));
-       return response()->json($files, 200);
+        return response()->json($files, 200);
     }
 }

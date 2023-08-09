@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\SeleniumController;
 use App\Http\Controllers\PdfCsvConversionController;
+use App\Http\Controllers\PDFController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,3 +53,6 @@ Route::post('upload', [SeleniumController::class, 'uploadFile']);
 // LEITURA PDF.
 Route::get('convert-pdf-to-xls', [PdfCsvConversionController::class, 'convertPdfToXLS']);
 // Route::get('convert-pdf-to-csv', [PdfCsvConversionController::class, 'convertPdfToCsv']);
+
+
+Route::get('teste', [PDFController::class, 'converterPdf']);
