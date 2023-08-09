@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Exception;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Smalot\PdfParser\Parser;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -11,30 +12,147 @@ use App\Repositories\RegexRepository;
 
 class RegexUtils
 {
-    public static function fetchValues($text)
-    {
-        try {
-            //dd($text);
-            // remover quebra de linhas / trasnforma em array
-            $arrayOfPages = preg_split('/["\n"]/', $text);
-            $string1 = '/1 \- Registro ANS/';
-            $string13 = '/13 \- Número da Guia no Prestador/';
-            //dd($text, $arrayOfPages);
-            //busca exata em cada pagina
-            if (preg_match($string1, $text)) {
-                // paginas sem procedimentos
-                return RegexRepository::searchTextOnPageWithoutProcedures($arrayOfPages);
-            } elseif (preg_match($string13, $text)) {
-                // paginas com procedimentos
-                return RegexRepository::searchTextOnPageWithProcedures($arrayOfPages);
-            } else {
-                return [];
-            }
+    /**
+     * Indica se deve obter todas as correspondências ou apenas a primeira.
+     *
+     * @var bool
+     */
+    protected $all = false;
 
-        } catch (Exception $error) {
-            Log::error($error->getMessage());
-            Log::error($error->getTraceAsString());
-            return $error->getMessage();
-        }
+    /**
+     * Texto de origem para aplicar a expressão regular.
+     *
+     * @var string|null
+     */
+    protected $origin = null;
+
+    /**
+     * Parte posterior ao trecho que se deseja obter.
+     *
+     * @var string
+     */
+    protected $pos = "\n";
+
+    /**
+     * Parte anterior ao trecho que se deseja obter.
+     *
+     * @var string
+     */
+    protected $pre = "\n";
+
+    /**
+     * Regra da expressão regular.
+     *
+     * @var string
+     */
+    protected $rule = "(.*?)";
+
+    /**
+     * Define que todas as correspondências devem ser obtidas.
+     *
+     * @return $this
+     */
+    public function all()
+    {
+        $this->all = true;
+
+        return $this;
     }
+
+    /**
+     * Define o texto de origem para aplicar a expressão regular.
+     *
+     * @param string $origin
+     * @return $this
+     */
+    public function origin(string $origin)
+    {
+        $this->origin = $origin;
+
+        return $this;
+    }
+
+    /**
+     * Define a parte posterior ao trecho que se deseja obter.
+     *
+     * @param string $pos
+     * @return $this
+     */
+    public function pos(?string $pos, bool $n = true)
+    {
+        if (!empty($pos)) {
+            $pos = Str::replace(["/", "(", ")", "|", "-"], ["\/", "\(", "\)", "\|", "\-"], $pos);
+            $pos = $n ? "{$pos}\n" : $pos;
+        }
+
+        $this->pos = $pos;
+
+        return $this;
+    }
+
+    /**
+     * Define a parte anterior ao trecho que se deseja obter.
+     *
+     * @param string $pre
+     * @return $this
+     */
+    public function pre(?string $pre, bool $n = true)
+    {
+        if (!empty($pre)) {
+            $pre = Str::replace(["/", "(", ")", "|", "-"], ["\/", "\(", "\)", "\|", "\-"], $pre);
+            $pre = $n ? "{$pre}\n" : $pre;
+        }
+
+        $this->pre = $pre;
+
+        return $this;
+    }
+
+    /**
+     * Define a regra da expressão regular.
+     *
+     * @param string $rule
+     * @return $this
+     */
+    public function rule(string $rule)
+    {
+        $this->rule = $rule;
+
+        return $this;
+    }
+
+    /**
+     * Executa a expressão regular e retorna as correspondências encontradas.
+     *
+     * @return array|string|null
+     */
+    public function get(string $start = "/", string $end = "/s"): array | null | string
+    {
+        $regex = implode(null, [$start, $this->pre, $this->rule, $this->pos, $end]);
+
+        if ($this->all) {
+            preg_match_all($regex, $this->origin, $matches);
+        } else {
+            preg_match($regex, $this->origin, $matches);
+        }
+
+        $this->resetProperties();
+
+        return array_key_exists(1, $matches) ? $matches[1] : null;
+    }
+
+    /**
+     * Reseta as propriedades da classe para seus valores padrão.
+     *
+     * @return void
+     */
+    protected function resetProperties()
+    {
+        $this->all = false;
+        $this->origin = null;
+        $this->pos = "\n";
+        $this->pre = "\n";
+        $this->rule = "(.*?)";
+    }
+
 }

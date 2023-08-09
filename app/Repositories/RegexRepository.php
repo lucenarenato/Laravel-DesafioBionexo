@@ -4,7 +4,11 @@ namespace App\Repositories;
 
 use Exception;
 use App\Http\Requests\Request;
+use Illuminate\Support\Str;
+use Spatie\PdfToText\Pdf;
+use App\Services\RegexUtils;
 use Illuminate\Support\Facades\Log;
+use PHPUnit\Framework\Attributes\Group;
 
 class RegexRepository
 {
@@ -84,7 +88,7 @@ class RegexRepository
     static function searchTextOnPageWithProcedures($arrayOfPages)
     {
         try {
-            //dump($arrayOfPages);
+        //dd($arrayOfPages);
             //dump($arrayOfPages[5]);
 
             preg_match('/(DADOS DA GUIA)(.*)(13 \- Número da Guia no Prestador)/', $arrayOfPages[2], $matches);
@@ -253,30 +257,61 @@ class RegexRepository
 
                     array_push($header['procedure'], trim($matches[1]));
                 }
-
+                // Pegar Descrição
                 if (preg_match('/^(\d{8})([a-zA-Z])/', trim($arrayOfPages[$i]), $matches)) {
                     preg_match('/[a-zA-Z](.*)/', $arrayOfPages[$i], $match);
-                    preg_match('/\D+/', $match[0], $match);
-                    $groupDescProcedures = trim($match[0]);
 
-                    $index = 0;
-                    for ($f = 0; $f < sizeof($header['Date']); $f++) {
-                        $descriptionProcedure = substr($groupDescProcedures, $index, 27);
-                        $index = $index + 27;
-                        array_push($header['description'], $descriptionProcedure);
+                    $indexPage = $i;
+                    $qtdeDate = sizeof($header['Date']);
+                    $qtdeDateStorage = 0;
+
+                    for ($r = 0; $r < $qtdeDate; $r++) {
+                        if($qtdeDateStorage >= $qtdeDate){
+                            break;
+                        }
+                        if(strlen($arrayOfPages[$indexPage]) <= 27){
+                            try {
+                                preg_match('/[a-zA-Z](.*)/', $arrayOfPages[$indexPage], $match);
+                                $descriptionProcedure = substr($match[0], 0, 27);
+                                array_push($header['description'], $descriptionProcedure);
+                                $indexPage = $indexPage + 1;
+                                $qtdeDateStorage ++;
+
+                            } catch(Exception $e) {
+                                //dd($e, $header['description'], $qtdeDateStorage, $qtdeDate, $arrayOfPages );
+                            }
+
+                        } else {
+                            $indexDescription = 0;
+                            preg_match('/[a-zA-Z](.*)/', $arrayOfPages[$indexPage], $match);
+
+                            $qtde = intval(round(strlen($match[0]) / 27));
+
+                            for($q = 0; $q < $qtde; $q++) {
+                                $descriptionProcedure = substr($match[0], $indexDescription, 27);
+                                array_push($header['description'], $descriptionProcedure);
+                                $indexDescription = $indexDescription + 27;
+                                $qtdeDateStorage ++;
+                            }
+                            $indexPage = $indexPage + 1;
+
+                        }
 
                     }
+
                 }
 
             }
-            // dd($header['description']);
+            // dump($arrayOfPages);
+            // dump($header['description']);
+
 
             $arraySize = sizeof($arrayOfPages);
             // Defina um padrão de expressão regular para uso posterior - de 0 a 9, na posição 15 .......
             $pattern = '/([0-9]{0,15}[\.]{0,1}[0-9]{0,15})[,]{1,1}[0-9]{0,2}/';
             // Loop na matriz(array)
-            for ($i = 3; $i < $arraySize; $i++) {
-                $currentPage = trim($arrayOfPages[$i]);
+            for ($l = 3; $l < $arraySize; $l++) {
+                $currentPage = trim($arrayOfPages[$l]);
                 $isValidPage = preg_match($pattern, $currentPage) && !preg_match('/\(/', $currentPage);
                 $isSingleChar = strlen($currentPage) == 1;
                 if ($isValidPage || $isSingleChar) {
@@ -301,8 +336,8 @@ class RegexRepository
                     break;
                 }
             }
-
-            for ($memory = 0; $memory < sizeof($arrayValues); $memory++) {
+            $memory = 0;
+            for ($memory; $memory < sizeof($arrayValues); $memory++) {
                 $value = $arrayValues[$memory];
                 if (!preg_match('/(\s)/', $value) && strlen($value) == 1) {
                     for ($i = 0; $i < sizeof($header['Date']); $i++) {
@@ -313,7 +348,7 @@ class RegexRepository
                 }
             }
 
-            for ($memory = 0; $memory < sizeof($arrayValues); $memory++) {
+            for ($memory; $memory < sizeof($arrayValues); $memory++) {
 
                 if (!preg_match('/(\s)/', $arrayValues[$memory])) {
                     for ($i = 0; $i < sizeof($header['Date']); $i++) {
@@ -324,7 +359,7 @@ class RegexRepository
                 }
             }
 
-            for ($memory = 0; $memory < sizeof($arrayValues); $memory++) {
+            for ($memory; $memory < sizeof($arrayValues); $memory++) {
 
                 if (!preg_match('/(\s)/', $arrayValues[$memory])) {
                     for ($i = 0; $i < sizeof($header['Date']); $i++) {
@@ -335,7 +370,7 @@ class RegexRepository
                 }
             }
 
-            for ($memory = 0; $memory < sizeof($arrayValues); $memory++) {
+            for ($memory; $memory < sizeof($arrayValues); $memory++) {
 
                 if (!preg_match('/(\s)/', $arrayValues[$memory])) {
                     for ($i = 0; $i < sizeof($header['Date']); $i++) {
@@ -405,28 +440,28 @@ class RegexRepository
             }
 
             $lineOfEachInformationProcedure = array();
-            for ($i = 0; $i < sizeof($header['Date']); $i++) {
+            for ($h = 0; $h < sizeof($header['Date']); $h++) {
 
-                $lineOfEachInformationProcedure['23 - Data de realizacao'] = $header['Date'][$i];
-                if(isset($header['table'][$i])) {
-                    $lineOfEachInformationProcedure['24 - Tabela'] = $header['table'][$i];
+                $lineOfEachInformationProcedure['23 - Data de realizacao'] = $header['Date'][$h];
+                if(isset($header['table'][$h])) {
+                    $lineOfEachInformationProcedure['24 - Tabela'] = $header['table'][$h];
                 } else {
                     $lineOfEachInformationProcedure['24 - Tabela'] = "";
                 }
-                $lineOfEachInformationProcedure['25 - Codigo Procedimento'] = $header['procedure'][$i];
+                $lineOfEachInformationProcedure['25 - Codigo Procedimento'] = $header['procedure'][$h];
 
-                if(isset($header['description'][$i])) {
-                    $lineOfEachInformationProcedure['26 - Descrição'] = $header['description'][$i];
+                if(isset($header['description'][$h])) {
+                    $lineOfEachInformationProcedure['26 - Descrição'] = $header['description'][$h];
                 } else {
                     $lineOfEachInformationProcedure['26 - Descrição'] = null;
                 }
-
-                $lineOfEachInformationProcedure['28 - Valor Informado'] = isset($header['value'][$i]) ? $header['value'][$i] : "";
-                $lineOfEachInformationProcedure['29 - Quantidade'] = isset($header['amount'][$i]) ? $header['amount'][$i] : "";
-                $lineOfEachInformationProcedure['30 - Valor Processado'] = isset($header['amountProcedure'][$i]) ? $header['amountProcedure'][$i] : "";
-                $lineOfEachInformationProcedure['31 - Valor Liberado'] = isset($header['amountReleased'][$i]) ? $header['amountReleased'][$i] : "";
-                $lineOfEachInformationProcedure['32 - Valor Glosa'] = isset($header['glossValue'][$i]) ? $header['glossValue'][$i] : "";
-                $lineOfEachInformationProcedure['33 - Codigo da Glosa'] = $header['glossCode'][$i];
+                //dump($header['amountProcedure'][$h]);
+                $lineOfEachInformationProcedure['28 - Valor Informado'] = $header['amountProcedure'][$h];
+                $lineOfEachInformationProcedure['29 - Quantidade'] = isset($header['amount'][$h]) ? $header['amount'][$h] : "";
+                $lineOfEachInformationProcedure['30 - Valor Processado'] = isset($header['amountProcedure'][$h]) ? $header['amountProcedure'][$h] : "";
+                $lineOfEachInformationProcedure['31 - Valor Liberado'] = isset($header['amountReleased'][$h]) ? $header['amountReleased'][$h] : "";
+                $lineOfEachInformationProcedure['32 - Valor Glosa'] = isset($header['glossValue'][$h]) ? $header['glossValue'][$h] : "";
+                $lineOfEachInformationProcedure['33 - Codigo da Glosa'] = $header['glossCode'][$h];
 
                 array_push($filteredData,
                     array_merge(
