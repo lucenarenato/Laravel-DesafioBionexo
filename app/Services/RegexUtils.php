@@ -155,4 +155,13 @@ class RegexUtils
         $this->rule = "(.*?)";
     }
 
+    protected function converterNumero(string $numero, bool $brasil = true): ?float
+    {
+        if ($brasil) $numero = Str::replace('.', '', $numero);
+
+        $numero = Str::replace(',', '.', $numero);
+
+        return is_numeric($numero) ? (float) $numero : null;
+    }
+
 }
