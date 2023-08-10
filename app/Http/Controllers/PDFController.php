@@ -7,6 +7,7 @@ use Spatie\PdfToText\Pdf;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 
 class PDFController extends Controller
 {
@@ -15,7 +16,8 @@ class PDFController extends Controller
         $text = Pdf::getText(Storage::disk('local_s3')->path('Leitura PDF.PDF'));
         $arrayOfPages = preg_split('/["\n"]/', $text);
         //dd($arrayOfPages);
-        //preg_match('/(.*)(0001)(.*)/', $arrayOfPages[4], $match);
+        //preg_match('/(.*)(0001)(.*)/', $arrayOfPages[4], $match)
+
         preg_match('/(\/)(.*)/', $arrayOfPages[4], $match);
 
         $qtePage = intval($match[2]);
@@ -23,10 +25,10 @@ class PDFController extends Controller
 
         for ($i = 1; $i < $qtePage; $i++) {
             $indexQtde = str_pad($i, 4, 0, STR_PAD_LEFT);
-
+            dump(preg_match('/(.*)(0001)(.*)/', $arrayOfPages[4], $match));
             //dd($indexQtde);
             $pattern = "/(.*)($indexQtde)(.*)/";
-            //dd($pattern);
+            dump($pattern);
 
 
             if (preg_match($pattern, $arrayOfPages[$i], $match)) {
@@ -37,7 +39,7 @@ class PDFController extends Controller
             }
         }
 
-        dd($pages);
+        Dump($pages);
 
         // for ($i = 0; $i < sizeof($arrayOfPages); $i++) {
         //     if (preg_match('/(.*)(0001)(.*)/', $arrayOfPages[$i], $match)) {
