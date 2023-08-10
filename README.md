@@ -90,6 +90,7 @@ Executar o comando abaixo, após o preenchimento dos annotations
 - https://github.com/seleniumhq/docker-selenium/#quick-start
 - https://regex101.com/
 - [Livro Expressões Regulares] - https://www.piazinho.com.br/
+- https://linux.die.net/man/1/pdftotext
 
 ## Fontes do desafio
 - https://testpages.herokuapp.com/styled/tag/table.html

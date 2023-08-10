@@ -185,6 +185,32 @@
                 ]
             }
         },
+        "/api/pdfmysql": {
+            "get": {
+                "tags": [
+                    "Desafio"
+                ],
+                "summary": "pdfmysql file",
+                "description": "pdfmysql",
+                "operationId": "6b08541cea33686d318841accf6d0565",
+                "responses": {
+                    "200": {
+                        "description": "Success pdfmysql"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/convert-pdf-to-xls": {
             "get": {
                 "tags": [

@@ -56,3 +56,4 @@ Route::get('convert-pdf-to-xls', [PdfCsvConversionController::class, 'convertPdf
 
 
 Route::get('teste', [PDFController::class, 'converterPdf']);
+Route::get('pdfmysql', [PDFController::class, 'pdfMysql']);
